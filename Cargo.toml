@@ -2,5 +2,15 @@
 name = "tenhou-parser-rs"
 version = "0.1.0"
 edition = "2021"
+authors = ['Rika']
 
 [dependencies]
+serde = { version = "1.0.204", features = ["derive"] }
+serde_json = "1.0.120"
+xml-rs = "0.8.20"
+quick-xml = "0.36.0"
+log = "0.4.22"
+glob = "0.3.1"
+kdam = "0.5.2"
+clap = { version = "4.5.9", features = ["derive"] }
+stderrlog = "0.6.0"
