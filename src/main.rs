@@ -42,27 +42,3 @@ fn main() {
         round::Game::parse_xml_file(path).write_to_json(output);
     });
 }
-
-#[cfg(test)]
-mod tests {
-    use std::path::Path;
-    use glob::glob;
-    use crate::round::Game;
-
-    #[test]
-    fn it_works() {
-        Game::parse_xml_file("samples/test.xml").write_to_json("samples/test.json")
-    }
-
-    #[test]
-    fn large() {
-        let input_glob = r#"D:\Projects\RMSS\data\2021\*"#;
-        let output_dir = r#"D:\Projects\RMSS\data\2021json"#;
-        let input = glob(&input_glob).unwrap().map(|x| x.unwrap());
-        input.for_each(|path| {
-            let path = path.as_path();
-            let output = Path::new(&output_dir).join(path.file_stem().unwrap()).with_extension("json");
-            Game::parse_xml_file(path).write_to_json(output);
-        });
-    }
-}
