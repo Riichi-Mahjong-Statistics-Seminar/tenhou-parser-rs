@@ -17,9 +17,13 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y gcc-multilib g++-multilib gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf gcc-aarch64-linux-gnu g++-aarch64-linux-gnu mingw-w64
 
       - name: Set up Rust
         uses: actions-rs/toolchain@v1
@@ -28,10 +32,28 @@ jobs:
           override: true
 
       - name: Build for x86_64-unknown-linux-gnu
-        run: cargo build --release --target x86_64-unknown-linux-gnu
+        run: rustup target add x86_64-unknown-linux-gnu && cargo build --release --target x86_64-unknown-linux-gnu
 
-      - name: Build for x86_64-pc-windows-msvc
-        run: cargo build --release --target x86_64-pc-windows-msvc
+      - name: Build for i686-unknown-linux-gnu
+        run: rustup target add i686-unknown-linux-gnu && cargo build --release --target i686-unknown-linux-gnu
+
+      - name: Build for aarch64-unknown-linux-gnu
+        run: rustup target add aarch64-unknown-linux-gnu && cargo build --release --target aarch64-unknown-linux-gnu
+
+      - name: Build for armv7-unknown-linux-gnueabihf
+        run: rustup target add armv7-unknown-linux-gnueabihf && cargo build --release --target armv7-unknown-linux-gnueabihf
+
+      - name: Build for x86_64-pc-windows-gnu
+        run: rustup target add x86_64-pc-windows-gnu && cargo build --release --target x86_64-pc-windows-gnu
+
+      - name: Build for i686-pc-windows-gnu
+        run: rustup target add i686-pc-windows-gnu && cargo build --release --target i686-pc-windows-gnu
+
+      - name: Build for aarch64-pc-windows-gnu
+        run: rustup target add aarch64-pc-windows-gnu && cargo build --release --target aarch64-pc-windows-gnu
+
+      - name: Build for armv7-pc-windows-gnu
+        run: rustup target add armv7-pc-windows-gnu && cargo build --release --target armv7-pc-windows-gnu
 
       - name: Create Release
         id: create_release
@@ -43,18 +65,66 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Linux artifact
+      - name: Upload Linux x86_64 artifact
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: target/x86_64-unknown-linux-gnu/release/your_project_name
-          asset_name: your_project_name-linux
+          asset_path: target/x86_64-unknown-linux-gnu/release/tenhou-parser-rs
+          asset_name: tenhou-parser-rs-linux-x86_64
           asset_content_type: application/octet-stream
 
-      - name: Upload Windows artifact
+      - name: Upload Linux i686 artifact
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: target/x86_64-pc-windows-msvc/release/your_project_name.exe
-          asset_name: your_project_name-windows.exe
+          asset_path: target/i686-unknown-linux-gnu/release/tenhou-parser-rs
+          asset_name: tenhou-parser-rs-linux-i686
+          asset_content_type: application/octet-stream
+
+      - name: Upload Linux aarch64 artifact
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: target/aarch64-unknown-linux-gnu/release/tenhou-parser-rs
+          asset_name: tenhou-parser-rs-linux-aarch64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Linux armv7 artifact
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: target/armv7-unknown-linux-gnueabihf/release/tenhou-parser-rs
+          asset_name: tenhou-parser-rs-linux-armv7
+          asset_content_type: application/octet-stream
+
+      - name: Upload Windows x86_64 artifact
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: target/x86_64-pc-windows-gnu/release/tenhou-parser-rs.exe
+          asset_name: tenhou-parser-rs-windows-x86_64.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Windows i686 artifact
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: target/i686-pc-windows-gnu/release/tenhou-parser-rs.exe
+          asset_name: tenhou-parser-rs-windows-i686.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Windows aarch64 artifact
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: target/aarch64-pc-windows-gnu/release/tenhou-parser-rs.exe
+          asset_name: tenhou-parser-rs-windows-aarch64.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Windows armv7 artifact
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: target/armv7-pc-windows-gnu/release/tenhou-parser-rs.exe
+          asset_name: tenhou-parser-rs-windows-armv7.exe
           asset_content_type: application/octet-stream
