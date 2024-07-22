@@ -7,7 +7,7 @@ Depending on IO speed, it can parse 200~1400 logs per second, at least 10 times 
 ## Usage
 
 ```
-Usage: tenhou-parser-rs.exe <INPUT> [OUTPUT]
+Usage: tenhou-parser-rs <INPUT> [OUTPUT]
 
 Arguments:
   <INPUT>   Input file, directory or glob pattern
